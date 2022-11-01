@@ -13,8 +13,15 @@ const checkOverlabReservation = Object.freeze({
   BORROW_CONDITION_POINT_THREE : '20:00:00'
 });
 
+const orderStatusEnums = Object.freeze({
+  RESERVED: 1,
+  CANCELED: 2,
+  COMPLETED: 3
+})
+
 module.exports = {
   priceEnum,
   findEmptyProductEnum,
-  checkOverlabReservation
+  checkOverlabReservation,
+  orderStatusEnums
 }

@@ -49,10 +49,24 @@ const sortByPremiumForQuery = ( option, query ) => {
   return queryOfSortOption[option];
 }
 
+const orderBySortForQuery = (sortBy) => {
+
+  const orderBySortOption = {
+      'ascPrice' : `ORDER BY is_premium DESC, time_price ASC`,
+      'descPrice' : `ORDER BY is_premium DESC, time_price DESC`,
+      'popularity': `ORDER BY is_premium DESC, count_rating DESC`,
+      'default' : `ORDER BY is_premium DESC, productId`
+  };
+
+  return orderBySortOption[sortBy];
+};
+
+
 module.exports ={
   distanceFormulaForQuery,
   filterByOptionForQuery,
   sortByOptionForQuery,
   sortByPremiumForQuery,
-  filterBySearchWordForQuery
+  filterBySearchWordForQuery,
+  orderBySortForQuery
 }

@@ -1,5 +1,5 @@
 const orderDao = require('../models/orderDao');
-const orderStatusEnums = require('../models/enums');
+const orderStatusEnums = require('../models/enum');
 
 const createOrder = async ( userId, roomId, checkIn, checkOut ) => {
 

@@ -8,7 +8,7 @@ CREATE TABLE reviews (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (room_id) REFERENCES romms(id)
+    FOREIGN KEY (room_id) REFERENCES rooms(id)
 );
 -- migrate:down
 DROP TABLE reviews;

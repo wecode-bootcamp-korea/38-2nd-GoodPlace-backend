@@ -40,9 +40,19 @@ const getUserBySocialId = async ( kakaoId ) => {
   );
   return userId;
 }
+const getUserById = async (userId) => {
+  return await database.query(`
+    SELECT
+      id AS userId,
+      nickname AS nickName
+    FROM users
+    WHERE id = ${userId};
+  `)
+}
 
 module.exports = { 
   createUser,
   createSeller,
-  getUserBySocialId
+  getUserBySocialId,
+  getUserById
 }

@@ -42,10 +42,8 @@ const deleteOrder = async ( orderId, userId, roomId ) => {
 
   const roomPrice = await orderDao.getRoomPriceByRoomId( +roomId );
     if(diffCheckIn === -1 || diffCheckIn === 0){
-
       await orderDao.deleteOrder( +orderId, +userId, +(roomPrice.price)/2 );
     } else if(diffCheckIn < -1){
-
       await orderDao.deleteOrder( +orderId, +userId, +roomPrice.price );
     } else{
       const error = new Error('YOU_CAN_NOT_CANCEL');

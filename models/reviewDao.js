@@ -38,7 +38,14 @@ const getReviewByRoomId = async ( roomId ) => {
         reviews.content AS content,
         reviews.user_id AS userId,
         reviews.room_id AS roomId,
-        review_images.image_url AS imageUrl
+        review_images.image_url AS imageUrl,
+        (
+          SELECT
+            review_comments.content
+          FROM 
+            review_comments
+          WHERE review_comments.review_id=reviews.id
+        ) AS comment
       FROM
         reviews
       JOIN review_images

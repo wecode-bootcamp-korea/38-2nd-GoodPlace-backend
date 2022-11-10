@@ -9,6 +9,7 @@ const createReview = catchAsync( async( req, res ) => {
     error.statusConde = 400;
     throw error;
   }
+
   const imageUrl = req.file.location;
 
   const review = await reviewService.createReview( +userId, +roomId, +rating, content, imageUrl );

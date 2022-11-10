@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { decode } = require('punycode');
 const { promisify } = require('util');
 const { getUserById } = require('../models/userDao');
 
@@ -23,7 +22,6 @@ const loginRequired = async (req, res, next) => {
 
     return res.status(error.statusCode).json({ message : error.message });
   }
-
   req.user = decoded;
   next();
 }

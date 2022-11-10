@@ -31,8 +31,7 @@ const getOrderByOrderId = catchAsync(async ( req, res )=> {
 })
 
 const getAllOrderByUserId = catchAsync(async( req, res )=> {
-  // const  userId  = req.user.userId;
-  const { userId } = req.query;
+  const  userId  = req.user.userId;
 
   const allOrderByUserId = await orderService.getAllOrderByUserId( +userId );
 

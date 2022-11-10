@@ -23,8 +23,8 @@ const filterBySearchWordForQuery = ( searchWord ) => {
 const sortByOptionForQuery = ( option ) => {
 
   const queryOfSortOption = {
-    'ascPrice' : `, T_price ASC`,
-    'descPrice' : `, T_price DESC`,
+    'ascPrice' : `, time_price ASC`,
+    'descPrice' : `, time_price DESC`,
     'ascDistance' : `, distance ASC`,
     'descDistance' : `, distance DESC`,
     'default' : ``

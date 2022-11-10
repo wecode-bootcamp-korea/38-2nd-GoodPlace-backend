@@ -23,13 +23,12 @@ const createOrder = async ( userId , roomId, checkIn, checkOut, pointChange ) =>
     ` , [ pointChange, userId])
 
     await queryRunner.commitTransaction();
-    await queryRunner.release();
-
     return data.insertId
     
   }catch (err){
     console.error(err);
     await queryRunner.rollbackTransaction();
+  } finally {
     await queryRunner.release();
   }
 }
@@ -61,27 +60,27 @@ const deleteOrder = async ( orderId, userId, roomPrice ) => {
   await queryRunner.startTransaction();
 
     try{
-    await queryRunner.query(`
-      UPDATE
-        orders
-      SET
-        order_status_id=?
-      WHERE id = ? AND user_id=?
-    `, [ orderStatusEnums.CANCELED, orderId, userId ])
+      await queryRunner.query(`
+        UPDATE
+          orders
+        SET
+          order_status_id=?
+        WHERE id = ? AND user_id=?
+      `, [ orderStatusEnums.CANCELED, orderId, userId ])
 
-    await queryRunner.query(`
-      UPDATE
-        users
-      SET
-        point=point+?
-      WHERE id=?
-    `, [ roomPrice, userId ])
-      queryRunner.commitTransaction();
-      queryRunner.release();
-    }catch(err){
+      await queryRunner.query(`
+        UPDATE
+          users
+        SET
+          point=point+?
+        WHERE id=?
+      `, [ roomPrice, userId ])
+      await queryRunner.commitTransaction();
+    } catch (err){
       console.error(err);
-      queryRunner.rollbackTransaction();
-      queryRunner.release();
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
 }
 
@@ -116,7 +115,8 @@ const getOrderByOrderId = async ( orderId )=> {
       order_statuses.description AS orderStatus,
       orders.id AS orderId,
       users.nickname AS userName,
-      rooms.thumbnail_url AS imageUrl
+      rooms.thumbnail_url AS imageUrl,
+      rooms.id AS roomId
     FROM orders
     JOIN rooms ON rooms.id=orders.room_id
     JOIN products ON products.id=rooms.product_id
@@ -140,7 +140,7 @@ const getDifferenceByOrderId = async (orderId) => {
 }
 
 const getOrderStatus = async ( orderId ) => {
-  const [orderStatus] =  await database.query(`
+  const [ orderStatus ] =  await database.query(`
     SELECT 
       order_status_id AS orderStatus
     FROM orders

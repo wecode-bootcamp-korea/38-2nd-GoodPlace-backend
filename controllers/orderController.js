@@ -17,7 +17,7 @@ const createOrder = catchAsync(async( req, res )=> {
 
 const deleteOrder = catchAsync(async ( req, res )=> {
   const  userId  = req.user.userId;
-  const { orderId , roomId } = req.query;
+  const { orderId , roomId } = req.body;
   await orderService.deleteOrder( +orderId, +userId, +roomId );
 
   res.status(200).json({ message: "DELETE SUCCESS"});

@@ -41,12 +41,11 @@ const deleteOrder = async ( orderId, userId, roomId ) => {
   const diffCheckIn = +getDifferenceByOrderId.diffDate
 
   const roomPrice = await orderDao.getRoomPriceByRoomId( +roomId );
-
     if(diffCheckIn === -1 || diffCheckIn === 0){
-      console.log(+orderId, +userId, +(roomPrice.price)/2);
+
       await orderDao.deleteOrder( +orderId, +userId, +(roomPrice.price)/2 );
     } else if(diffCheckIn < -1){
-      console.log(+orderId, +userId, +roomPrice.price);
+
       await orderDao.deleteOrder( +orderId, +userId, +roomPrice.price );
     } else{
       const error = new Error('YOU_CAN_NOT_CANCEL');
@@ -64,6 +63,7 @@ const getOrderByOrderId = async ( orderId ) => {
   const getOrder = await orderDao.getOrderByOrderId( +orderId );
   let changeISOCheckIn = getOrder[0].checkIn.toISOString();
   let changeISOCheckOut = getOrder[0].checkOut.toISOString();
+  let priceMultiple = Math.floor((Date.parse(changeISOCheckOut)-Date.parse(changeISOCheckIn))/1000/60/60);
   const deleteTCheckIn = changeISOCheckIn.replace('T' , ' ').replace('.000Z','');
 
   const deleteTCheckOut = changeISOCheckOut.replace('T',' ').replace('.000Z','');
@@ -73,6 +73,7 @@ const getOrderByOrderId = async ( orderId ) => {
 
   getOrder[0].checkIn = checkIn;
   getOrder[0].checkOut = checkOut;
+  getOrder[0].price *= priceMultiple;
 
   return getOrder;
 }

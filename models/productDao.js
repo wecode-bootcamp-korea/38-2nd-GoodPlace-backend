@@ -144,6 +144,8 @@ const getProductInfoByProductId = async(productId) => {
             products.thumbnail_url,
             products.address,
             products.description,
+            products.latitude,
+            products.longitude,
             rating.avg_rating as avg_rating,
             rating.count_rating as count_rating,
             product_images

@@ -1,5 +1,5 @@
 const { database } = require('./dataSource');
-const orderStatusEnums = require('./enums');
+const orderStatusEnums = require('./enum');
 
 const createOrder = async ( userId , roomId, checkIn, checkOut, pointChange ) => {
   const queryRunner = database.createQueryRunner();

@@ -71,7 +71,65 @@ const getProductNameBySearchWord = catchAsync(async (req, res) => {
   res.status(200).json({ 'productInfo' : productList });
 });
 
+const getProductInfoByProductId = catchAsync(async(req, res) => {
+    const { productId } = req.params;
+ 
+    if(!productId) {
+        const error = new Error('PRODUCTID IS MISSING ERROR');
+        error.statusCode = 400;
+    
+        throw error;
+    };
+
+    const productInfo = await productService.getProductInfoByProductId(productId);
+    res.status(200).json({productInfo});
+});
+
+const getRoomInfoByProductId = catchAsync(async(req, res) => {
+    const { productId, checkIn, checkOut } = req.query;
+
+    if(!productId) {
+        const error = new Error('KEY ERROR');
+        error.statusCode = 400;
+
+        throw error;
+    };
+        const roomInfo = await productService.getRoomInfoByProductId(productId, checkIn, checkOut);
+        res.status(200).json({ roomInfo });
+});
+
+const getRoomImageByProductId = catchAsync(async(req, res) => {
+    const { productId, roomId } = req.query;
+
+    if(!productId || !roomId) {
+        const error = new Error('KEY ERROR');
+        error.statusCode = 400;
+
+        throw error;
+    };
+        const roomImage = await productService.getRoomImageByProductId(productId, roomId);
+        res.status(200).json({ roomImage });
+});
+
+const getProductInfo = catchAsync(async(req, res) => {
+    const { offset, limit, sortBy, subCategoryId, optionArray } = req.query;
+
+    if(!offset || !limit || !sortBy || !subCategoryId || !optionArray) {
+        const error = new Error('KEY ERROR');
+        error.statusCode = 400;
+
+        throw error;
+    };
+
+    const productInfo = await productService.getProductInfo(offset, limit, sortBy, subCategoryId, optionArray);
+    res.status(200).json({ productInfo });
+});
+
 module.exports = {
-  getProductDistanceByUser,
-  getProductNameBySearchWord
+    getProductDistanceByUser,
+    getProductNameBySearchWord,
+    getProductInfoByProductId,
+    getRoomInfoByProductId,
+    getRoomImageByProductId,
+    getProductInfo
 }

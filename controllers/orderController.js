@@ -2,9 +2,9 @@ const orderService = require('../services/orderService');
 const { catchAsync } = require('../utils/error');
 
 const createOrder = catchAsync(async( req, res )=> {
-  const  userId  = req.user.userId;
+  const  userId  = req.user.id;
   const { roomId, checkIn, checkOut } = req.body;
-  
+ 
   if( !req.body.roomId || !req.body.checkIn || !req.body.checkOut){
     const error = new Error('CHECK_YOUR_BODY');
     error.statusCode = 401;
@@ -16,7 +16,7 @@ const createOrder = catchAsync(async( req, res )=> {
 })
 
 const deleteOrder = catchAsync(async ( req, res )=> {
-  const  userId  = req.user.userId;
+  const  userId  = req.user.id;
   const { orderId , roomId } = req.body;
   await orderService.deleteOrder( +orderId, +userId, +roomId );
 
@@ -31,7 +31,7 @@ const getOrderByOrderId = catchAsync(async ( req, res )=> {
 })
 
 const getAllOrderByUserId = catchAsync(async( req, res )=> {
-  const  userId  = req.user.userId;
+  const  userId  = req.user.id;
 
   const allOrderByUserId = await orderService.getAllOrderByUserId( +userId );
 

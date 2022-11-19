@@ -1,5 +1,5 @@
 const orderDao = require('../models/orderDao');
-const orderStatusEnums = require('../models/enum');
+const {orderStatusEnums} = require('../models/enum');
 
 const createOrder = async ( userId, roomId, checkIn, checkOut ) => {
 
@@ -33,9 +33,10 @@ const createOrder = async ( userId, roomId, checkIn, checkOut ) => {
 const deleteOrder = async ( orderId, userId, roomId ) => {
 
   const orderStatusId = await orderDao.getOrderStatus(+orderId);
-  const orderStatus = orderStatusEnums.RESERVED
-  if(orderStatusId.orderStatus === orderStatus){
+  const orderStatus = orderStatusEnums.RESERVED;
 
+  if(orderStatusId.orderStatus === orderStatus){
+    
   const getDifferenceByOrderId = await orderDao.getDifferenceByOrderId(+orderId);
 
   const diffCheckIn = +getDifferenceByOrderId.diffDate

@@ -112,14 +112,20 @@ const getRoomImageByProductId = catchAsync(async(req, res) => {
 });
 
 const getProductInfo = catchAsync(async(req, res) => {
-    const { offset, limit, sortBy, subCategoryId, optionArray } = req.query;
-
-    if(!offset || !limit || !sortBy || !subCategoryId || !optionArray) {
+    const { offset, limit, subCategoryId, optionArray } = req.query;
+    let sortBy = req.query.sortBy ? req.query.sortBy : 'default';
+   
+    if(!offset || !limit || !subCategoryId || !optionArray) {
         const error = new Error('KEY ERROR');
         error.statusCode = 400;
 
         throw error;
     };
+    if ( sortBy !== 'ascPrice' && sortBy !== 'descPrice' && sortBy !== 'popularity' && sortBy !== 'default' ) {
+      const err = new Error('SORT_OPTION_IS_NOT_VALID');
+      err.statusCode = 400;
+      throw err;
+    }
 
     const productInfo = await productService.getProductInfo(offset, limit, sortBy, subCategoryId, optionArray);
     res.status(200).json({ productInfo });

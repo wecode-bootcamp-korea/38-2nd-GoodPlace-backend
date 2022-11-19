@@ -1,7 +1,7 @@
 const { database } = require('./dataSource');
-const orderStatusEnums = require('./enum');
+const { orderStatusEnums } = require('./enum');
 
-const createOrder = async ( userId , roomId, checkIn, checkOut, pointChange ) => {
+const createOrder = async ( userId , roomId, checkIn, checkOut, pointChange , orderStatus) => {
   const queryRunner = database.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
@@ -16,12 +16,19 @@ const createOrder = async ( userId , roomId, checkIn, checkOut, pointChange ) =>
         (?,?,?,?)
     `,[ userId, roomId, checkIn, checkOut ])
 
+    const insertId = data.insertId
+
     await queryRunner.query(`
       UPDATE users
         SET point=?
       WHERE id=?
     ` , [ pointChange, userId])
-
+    await queryRunner.query(`
+      UPDATE orders
+        SET order_status_id=?
+      WHERE id = ?
+    ` , [ orderStatus , insertId] )
+    
     await queryRunner.commitTransaction();
     return data.insertId
     

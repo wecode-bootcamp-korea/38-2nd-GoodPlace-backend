@@ -2,8 +2,9 @@ const reviewService = require('../services/reviewService');
 const { catchAsync } = require('../utils/error');
 
 const createReview = catchAsync( async( req, res ) => {
-  const { userId }  = req.user;
+  const  userId   = req.user.id;
   const { roomId, rating, content } = req.body;
+  
   if( !userId || !roomId || !rating || !content){
     const error = new Error('YOUR_REQUEST_IS_DANGEROUS');
     error.statusConde = 400;
@@ -27,7 +28,7 @@ const getReviewByRoomId = catchAsync( async ( req, res ) => {
 })
 
 const updateReviewByRId = catchAsync( async ( req, res ) => {
-  const { userId } = req.user;
+  const userId   = req.user.id;
   const { rating, content } = req.body;
   const {reviewId} = req.params;
   const imageUrl = req.file.location;

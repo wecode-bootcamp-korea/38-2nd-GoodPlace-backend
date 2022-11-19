@@ -13,8 +13,8 @@ const loginRequired = async (req, res, next) => {
   }
 
   const decoded = await promisify(jwt.verify)(accessToken, process.env.JWT_SECRET);
-  
-  const user = await getUserById(decoded.userId);
+
+  const user = await getUserById(decoded.id);
 
   if(!user) {
     const error = new Error('USER_DOES_NOT_EXIST');
@@ -23,6 +23,7 @@ const loginRequired = async (req, res, next) => {
     return res.status(error.statusCode).json({ message : error.message });
   }
   req.user = decoded;
+
   next();
 }
 
